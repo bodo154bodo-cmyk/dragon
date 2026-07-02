@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مغامرة الآيات السبع: مفتاح الجنة 🔑</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for child-friendly Arabic Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for playful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: radial-gradient(circle, #f0fdf4 0%, #dcfce7 100%);
+            user-select: none;
+        }
+        .bouncy {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .locked-path {
+            filter: grayscale(1) opacity(0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
+
+    <!-- MAIN GAME CONTAINER -->
+    <div class="relative w-full max-w-[1280px] h-[720px] bg-white rounded-3xl shadow-2xl border-8 border-emerald-400 overflow-hidden flex flex-col justify-between p-6">
+        
+        <!-- Decorative Background Elements -->
+        <div class="absolute -top-10 -left-10 w-40 h-40 bg-yellow-200 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-200 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
+
+        <!-- SCREEN 1: WELCOME SCREEN -->
+        <div id="screen-welcome" class="h-full flex flex-col items-center justify-between py-6">
+            <div class="text-center space-y-3">
+                <span class="bg-yellow-400 text-emerald-900 font-black text-lg px-6 py-2 rounded-full shadow-md inline-block bouncy">أهلاً بأبطال القرآن! 👋</span>
+                <h1 class="text-5xl font-black text-emerald-700 leading-tight">مغامرة الآيات السبع 🛡️</h1>
+                <p class="text-xl text-gray-600 font-medium">سافر معنا في رحلة مشوقة لجمع المفاتيح السبعة لفتح سورة الفاتحة وفهم معانيها العظيمة!</p>
+            </div>
+
+            <!-- Visual Core: Elegant Icon Illustration -->
+            <div class="w-[320px] h-[220px] rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 shadow-inner border-4 border-emerald-300 flex flex-col items-center justify-center gap-3">
+                <i class="fa-solid fa-book-quran text-7xl text-emerald-600 bouncy"></i>
+                <span class="text-emerald-800 font-bold text-lg">مصحفي سر سعادتي 📖✨</span>
+            </div>
+
+            <button onclick="startGame()" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-3xl font-black px-12 py-5 rounded-2xl shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center gap-4">
+                <span>ابدأ المغامرة الآن!</span>
+                <i class="fa-solid fa-gamepad"></i>
+            </button>
+        </div>
+
+        <!-- SCREEN 2: INTERACTIVE MAP SCREEN -->
+        <div id="screen-map" class="hidden h-full flex flex-col justify-between">
+            <div class="flex justify-between items-center bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🔑</span>
+                    <div>
+                        <h2 class="font-black text-emerald-800 text-xl">خريطة الكنز المبارك</h2>
+                        <p class="text-sm text-gray-500">افتح المحطات بالترتيب للوصول إلى التاج الذهبي!</p>
+                    </div>
+                </div>
+                <div class="w-1/3 space-y-1">
+                    <div class="flex justify-between text-sm font-bold text-emerald-700">
+                        <span>المفاتيح المجموعة: <span id="keys-count">0</span>/7</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div id="progress-fill" class="bg-gradient-to-r from-yellow-400 to-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative flex-grow flex items-center justify-center py-6 px-12">
+                <svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                    <path id="map-path" d="M 120 280 Q 280 120, 440 280 T 760 280 T 1080 280" fill="none" stroke="#a7f3d0" stroke-width="12" stroke-dasharray="15 10" />
+                </svg>
+
+                <div class="relative w-full h-full flex justify-between items-center z-10">
+                    <div id="milestone-1" onclick="openQuest(1)" class="cursor-pointer flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-yellow-400 border-4 border-yellow-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>1</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-1">🔑</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">البسملة</span>
+                    </div>
+
+                    <div id="milestone-2" onclick="openQuest(2)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-emerald-400 border-4 border-emerald-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>2</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-2">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">الحمد لله</span>
+                    </div>
+
+                    <div id="milestone-3" onclick="openQuest(3)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-sky-400 border-4 border-sky-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>3</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-3">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">الرحمن الرحيم</span>
+                    </div>
+
+                    <div id="milestone-4" onclick="openQuest(4)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-indigo-400 border-4 border-indigo-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>4</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-4">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">يوم الدين</span>
+                    </div>
+
+                    <div id="milestone-5" onclick="openQuest(5)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-purple-400 border-4 border-purple-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>5</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-5">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">إياك نعبد</span>
+                    </div>
+
+                    <div id="milestone-6" onclick="openQuest(6)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-pink-400 border-4 border-pink-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>6</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-6">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">الصراط</span>
+                    </div>
+
+                    <div id="milestone-7" onclick="openQuest(7)" class="locked-path pointer-events-none flex flex-col items-center gap-2 transform transition hover:scale-110">
+                        <div class="w-20 h-20 bg-amber-500 border-4 border-amber-200 rounded-full flex items-center justify-center text-3xl shadow-lg relative">
+                            <span>7</span>
+                            <div class="absolute -top-2 -right-2 text-xl" id="key-status-7">🔒</div>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm">الطيبين</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center bg-emerald-700 text-white p-3 rounded-2xl font-bold">
+                <i class="fa-solid fa-circle-info ml-2"></i>اضغط على المحطة النشطة لمواجهة التحدي وجمع المفتاح!
+            </div>
+        </div>
+
+        <!-- SCREEN 3: INTERACTIVE QUEST MODALS -->
+        <div id="quest-modal" class="hidden absolute inset-6 bg-white rounded-3xl border-4 border-yellow-400 p-8 flex flex-col justify-between z-50">
+            <div class="flex justify-between items-center border-b pb-4">
+                <div class="flex items-center gap-3">
+                    <span id="quest-icon" class="text-4xl">🌟</span>
+                    <div>
+                        <h3 id="quest-title" class="font-black text-2xl text-emerald-800">العنوان</h3>
+                        <p id="quest-subtitle" class="text-sm text-gray-500">الآية الكريمة</p>
+                    </div>
+                </div>
+                <button onclick="closeQuest()" class="bg-red-100 text-red-600 hover:bg-red-200 w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div id="quest-content" class="flex-grow py-6 flex flex-col items-center justify-center"></div>
+
+            <div class="flex justify-between items-center pt-4 border-t">
+                <span id="feedback-text" class="text-lg font-bold text-gray-500">هل أنت مستعد للتحدي؟ 🤔</span>
+                <button id="next-quest-btn" class="hidden bg-gradient-to-r from-yellow-400 to-amber-500 text-emerald-900 font-bold px-8 py-3 rounded-xl shadow-lg hover:scale-105 transition" onclick="nextAction()">التالي 🚀</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: VICTORY SCREEN -->
+        <div id="screen-victory" class="hidden h-full flex flex-col items-center justify-between py-4">
+            <div class="text-center space-y-2 z-10">
+                <h2 class="text-4xl font-black text-emerald-700 bouncy">🎉 مبروك يا بطل القرآن! 🎉</h2>
+                <p class="text-lg text-gray-600">لقد جمعت كل المفاتيح السبعة وفهمت سورة الفاتحة بالكامل!</p>
+            </div>
+
+            <div id="certificate" class="relative w-[500px] h-[340px] bg-gradient-to-br from-yellow-50 to-amber-100 border-8 border-yellow-400 rounded-3xl p-6 shadow-2xl flex flex-col justify-between items-center text-center z-10">
+                <div class="absolute top-2 right-2 text-4xl">🎖️</div>
+                <div class="absolute bottom-2 left-2 text-4xl">🕌</div>
+                
+                <h3 class="text-2xl font-black text-emerald-800">شهادة تميز وتاج الفخر 👑</h3>
+                <p class="text-sm text-gray-600 font-medium">نشهد بأن بطل القرآن المميز:</p>
+                
+                <input type="text" id="winner-name" placeholder="اكتب اسم البطل هنا..." class="bg-white border-2 border-dashed border-emerald-400 text-emerald-900 text-2xl font-black text-center px-4 py-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-emerald-200 w-4/5 shadow-inner">
+                
+                <p class="text-sm text-gray-700 leading-relaxed font-bold">قد اجتاز بنجاح "مغامرة الآيات السبع" وفهم أسرار ومعاني سورة الفاتحة العظيمة!</p>
+                <span class="text-xs text-gray-400">معلم القرآن الفخور بك دائماً 🌟</span>
+            </div>
+
+            <div class="flex gap-4 z-10">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg flex items-center gap-2 transition">
+                    <i class="fa-solid fa-print"></i>طباعة الشهادة
+                </button>
+                <button onclick="resetGame()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg flex items-center gap-2 transition">
+                    <i class="fa-solid fa-rotate-left"></i>اللعب مجدداً
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AUDIO CONTEXT GENERATOR FOR SFX -->
+    <script>
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playBeep(type) {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'success') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); 
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(147, audioCtx.currentTime + 0.15); 
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            }
+        }
+    </script>
+
+    <!-- GAME STATE & LOGIC -->
+    <script>
+        let currentUnlockedStep = 1;
+        let keysCollected = 0;
+        let activeQuest = 0;
+
+        const quests = {
+            1: {
+                icon: "📜",
+                title: "محطة البسملة",
+                subtitle: "﴿بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ﴾",
+                type: "mcq",
+                question: "قبل أن نأكل، نلعب، نذاكر، أو نبدأ الصلاة.. ماذا نقول يا بطل لنكسب البركة والمساعدة من الله؟",
+                options: [
+                    { text: "أستغفر الله العظيم", correct: false },
+                    { text: "بسم الله الرحمن الرحيم", correct: true },
+                    { text: "الحمد لله رب العالمين", correct: false }
+                ]
+            },
+            2: {
+                icon: "🌍",
+                title: "محطة شكر النعم",
+                subtitle: "﴿الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ﴾",
+                type: "multi",
+                question: "اضغط على 3 أشياء من نعم الله العظيمة التي تحبها وتريد شكره (الحمد لله) عليها الآن:",
+                options: [
+                    { text: "العينين السليمتين 👀", correct: true },
+                    { text: "الألعاب البلاستيكية 🧸", correct: false },
+                    { text: "عائلتي الرائعة 👨‍👩‍👧‍👦", correct: true },
+                    { text: "الهاتف الذكي 📱", correct: false },
+                    { text: "الماء البارد والمطر 🌧️", correct: true }
+                ]
+            },
+            3: {
+                icon: "❤️",
+                title: "محطة رحمة القلوب",
+                subtitle: "﴿الرَّحْمَٰنِ الرَّحِيمِ﴾",
+                type: "mcq",
+                question: "الله رحيم جداً بنا، وهو يحب القلوب الرحيمة. أي من هذه المواقف يعبر عن صفة الرحمة؟",
+                options: [
+                    { text: "مساعدة رجل مسن كفيف يعبر الطريق 👵🏼❤️", correct: true },
+                    { text: "طفل يقطف الأزهار الجميلة ويرميها على الأرض 🥀", correct: false },
+                    { text: "شخص يصرخ في وجه القطة المسكينة 😿", correct: false }
+                ]
+            },
+            4: {
+                icon: "👑",
+                title: "محطة الملك الحقيقي",
+                subtitle: "﴿مَالِكِ يَوْمِ الدِّينِ﴾",
+                type: "mcq",
+                question: "من هو الخالق والملك الحقيقي الذي يملك الأرض، السماء، والجنة، ويحاسبنا بعدل ورحمة يوم القيامة؟",
+                options: [
+                    { text: "الملوك والوزراء والأغنياء في الدنيا", correct: false },
+                    { text: "الله سبحانه وتعالى وحده 🕋", correct: true },
+                    { text: "الأبطال الخارقون في الكرتون 🦸‍♂️", correct: false }
+                ]
+            },
+            5: {
+                icon: "🤝",
+                title: "محطة الاستعانة",
+                subtitle: "﴿إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ﴾",
+                type: "mcq",
+                question: "إذا صعب عليك شيء في المدرسة أو واجهتك مشكلة، من أول من تدعو بقلبك الصادق ليساعدك ويحميك؟",
+                options: [
+                    { text: "رجل الإطفاء أو رجال الشرطة فقط", correct: false },
+                    { text: "الله سبحانه وتعالى بالدعاء أولاً 🤲🏼", correct: true },
+                    { text: "أصدقائي في الحديقة", correct: false }
+                ]
+            },
+            6: {
+                icon: "🛣️",
+                title: "محطة الصراط المستقيم",
+                subtitle: "﴿اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ﴾",
+                type: "mcq",
+                question: "ما هو الصراط المستقيم الذي نطلب من الله أن يثبتنا عليه في هذه الآية الجميلة؟",
+                options: [
+                    { text: "طريق الصدق، الصلاة، بر الوالدين ومساعدة المحتاجين 🕊️", correct: true },
+                    { text: "طريق الكسل، الغش، المشاغبة والكذب على الآخرين 🌪️", correct: false }
+                ]
+            },
+            7: {
+                icon: "🌟",
+                title: "محطة القدوة الصالحة",
+                subtitle: "﴿صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ﴾",
+                type: "mcq",
+                question: "من هم القدوات الرائعة الذين أنعم الله عليهم بالخير والنور والجنة، والذين نريد أن نكون مثلهم؟",
+                options: [
+                    { text: "الأشرار ومفتعلو المشاكل 👹", correct: false },
+                    { text: "الأنبياء (عليهم السلام) والصالحون الطيبون 🕌✨", correct: true },
+                    { text: "الأشخاص الكسالى الذين لا يفعلون شيئاً مفيداً", correct: false }
+                ]
+            }
+        };
+
+        function startGame() {
+            playBeep('click');
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-map').classList.remove('hidden');
+        }
+
+        function openQuest(id) {
+            if (id > currentUnlockedStep) return; 
+            playBeep('click');
+            activeQuest = id;
+            const data = quests[id];
+            
+            document.getElementById('quest-icon').innerText = data.icon;
+            document.getElementById('quest-title').innerText = data.title;
+            document.getElementById('quest-subtitle').innerText = data.subtitle;
+            document.getElementById('feedback-text').innerText = "فكر جيداً قبل الإجابة يا بطل! 🤔";
+            document.getElementById('feedback-text').className = "text-lg font-bold text-gray-500";
+            document.getElementById('next-quest-btn').classList.add('hidden');
+
+            const contentArea = document.getElementById('quest-content');
+            contentArea.innerHTML = '';
+
+            const qEl = document.createElement('div');
+            qEl.className = "text-center w-full max-w-2xl space-y-6";
+            qEl.innerHTML = `<p class="text-2xl font-bold text-gray-800 leading-snug">${data.question}</p>`;
+
+            const optsContainer = document.createElement('div');
+            optsContainer.className = "grid grid-cols-1 gap-4 mt-6";
+
+            if (data.type === 'mcq') {
+                data.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-right p-4 rounded-xl border-2 border-gray-200 hover:border-emerald-400 hover:bg-emerald-50 text-xl font-bold transition flex justify-between items-center";
+                    btn.innerHTML = `<span>${opt.text}</span> <i class="fa-regular fa-circle text-gray-300"></i>`;
+                    btn.onclick = () => checkMCQ(opt, btn, optsContainer);
+                    optsContainer.appendChild(btn);
+                });
+            } else if (data.type === 'multi') {
+                optsContainer.className = "grid grid-cols-2 gap-4 mt-6";
+                let selectedCount = 0;
+                const required = 3;
+                
+                data.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-center p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 text-lg font-bold transition flex flex-col items-center justify-center gap-2";
+                    btn.innerHTML = `<span>${opt.text}</span>`;
+                    btn.dataset.correct = opt.correct;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('bg-blue-50')) {
+                            btn.className = "text-center p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 text-lg font-bold transition flex flex-col items-center justify-center gap-2";
+                            selectedCount--;
+                        } else {
+                            btn.className = "text-center p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-blue-900 text-lg font-bold transition flex flex-col items-center justify-center gap-2 shadow-md";
+                            selectedCount++;
+                            playBeep('click');
+                        }
+                        
+                        if (selectedCount === required) {
+                            const selectedButtons = optsContainer.querySelectorAll('.bg-blue-50');
+                            let allCorrect = true;
+                            selectedButtons.forEach(b => {
+                                if (b.dataset.correct === 'false') allCorrect = false;
+                            });
+
+                            if (allCorrect) {
+                                playBeep('success');
+                                document.getElementById('feedback-text').innerText = "سبحان الله! أحسنت باكتشاف نعم الله لنشكره عليها دائمًا! 🎉";
+                                document.getElementById('feedback-text').className = "text-lg font-bold text-emerald-600 bouncy";
+                                document.getElementById('next-quest-btn').classList.remove('hidden');
+                                optsContainer.querySelectorAll('button').forEach(b => b.onclick = null);
+                            } else {
+                                playBeep('fail');
+                                document.getElementById('feedback-text').innerText = "بعض النعم ليست من النعم الطبيعية المباشرة المذكورة، جرب مجددًا! 🔄";
+                                document.getElementById('feedback-text').className = "text-lg font-bold text-red-500";
+                                setTimeout(() => {
+                                    optsContainer.querySelectorAll('button').forEach(b => {
+                                        b.className = "text-center p-4 rounded-xl border-2 border-gray-200 hover:border-blue-400 text-lg font-bold transition flex flex-col items-center justify-center gap-2";
+                                    });
+                                    selectedCount = 0;
+                                }, 1500);
+                            }
+                        }
+                    };
+                    optsContainer.appendChild(btn);
+                });
+            }
+
+            qEl.appendChild(optsContainer);
+            contentArea.appendChild(qEl);
+
+            document.getElementById('quest-modal').classList.remove('hidden');
+        }
+
+        function checkMCQ(option, button, container) {
+            const btns = container.querySelectorAll('button');
+            btns.forEach(b => b.onclick = null);
+
+            if (option.correct) {
+                playBeep('success');
+                button.className = "w-full text-right p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xl font-bold transition flex justify-between items-center shadow-md";
+                button.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600";
+                
+                document.getElementById('feedback-text').innerText = "رائع جداً! إجابة ممتازة وذكية يا بطل! 🎉";
+                document.getElementById('feedback-text').className = "text-lg font-bold text-emerald-600 bouncy";
+                document.getElementById('next-quest-btn').classList.remove('hidden');
+            } else {
+                playBeep('fail');
+                button.className = "w-full text-right p-4 rounded-xl border-2 border-red-500 bg-red-50 text-red-900 text-xl font-bold transition flex justify-between items-center shadow-md";
+                button.querySelector('i').className = "fa-solid fa-circle-xmark text-red-600";
+                
+                document.getElementById('feedback-text').innerText = "إجابة خاطئة، حاول قراءة الخيارات مجدداً بتأمل! 🔄";
+                document.getElementById('feedback-text').className = "text-lg font-bold text-red-500";
+                
+                setTimeout(() => {
+                    openQuest(activeQuest);
+                }, 1500);
+            }
+        }
+
+        function closeQuest() {
+            playBeep('click');
+            document.getElementById('quest-modal').classList.add('hidden');
+        }
+
+        function nextAction() {
+            playBeep('click');
+            document.getElementById('quest-modal').classList.add('hidden');
+            
+            document.getElementById(`key-status-${activeQuest}`).innerText = "✅";
+            document.getElementById(`milestone-${activeQuest}`).classList.add('scale-95', 'opacity-80');
+            
+            if (activeQuest === currentUnlockedStep) {
+                currentUnlockedStep++;
+                keysCollected++;
+            }
+
+            updateMapProgress();
+
+            if (currentUnlockedStep > 7) {
+                setTimeout(() => {
+                    showVictoryScreen();
+                }, 500);
+            } else {
+                const nextMilestone = document.getElementById(`milestone-${currentUnlockedStep}`);
+                nextMilestone.classList.remove('locked-path');
+                nextMilestone.classList.add('scale-105');
+                nextMilestone.querySelector('.absolute').innerText = "🔑";
+                nextMilestone.style.pointerEvents = 'auto';
+            }
+        }
+
+        function updateMapProgress() {
+            document.getElementById('keys-count').innerText = keysCollected;
+            const percent = Math.round((keysCollected / 7) * 100);
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+        }
+
+        function showVictoryScreen() {
+            document.getElementById('screen-map').classList.add('hidden');
+            document.getElementById('screen-victory').classList.remove('hidden');
+            playVictoryTune();
+        }
+
+        function playVictoryTune() {
+            const melody = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50];
+            melody.forEach((freq, idx) => {
+                setTimeout(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }, idx * 150);
+            });
+        }
+
+        function resetGame() {
+            playBeep('click');
+            currentUnlockedStep = 1;
+            keysCollected = 0;
+            activeQuest = 0;
+            
+            for(let i=1; i<=7; i++) {
+                const ms = document.getElementById(`milestone-${i}`);
+                if (i === 1) {
+                    ms.classList.remove('locked-path');
+                    ms.style.pointerEvents = 'auto';
+                    document.getElementById(`key-status-1`).innerText = "🔑";
+                } else {
+                    ms.classList.add('locked-path');
+                    ms.style.pointerEvents = 'none';
+                    document.getElementById(`key-status-${i}`).innerText = "🔒";
+                }
+                ms.classList.remove('scale-95', 'opacity-80', 'scale-105');
+            }
+
+            updateMapProgress();
+            document.getElementById('screen-victory').classList.add('hidden');
+            document.getElementById('screen-map').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
